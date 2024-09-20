@@ -29,6 +29,11 @@ const Sidebar = () => {
               <FiCalendar className="mr-3" /> Cronograma
             </Link>
           </li>
+          <li className="mb-6">
+            <Link to="/" className="flex items-center text-white hover:bg-gray-700 p-2 rounded">
+              <FiList className="mr-3" /> Login
+            </Link>
+          </li>
         </ul>
       </nav>
     </div>

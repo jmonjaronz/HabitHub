@@ -5,6 +5,7 @@ import Dashboard from './pages/Dashboard';
 import Board from './pages/Board'; 
 import Tasks from './pages/TaskManager'; 
 import Cronograma from './pages/Cronograma';
+import Login from './pages/Login'; // Asegúrate de que la ruta sea correcta
 
 const App = () => {
   return (
@@ -15,11 +16,12 @@ const App = () => {
           <Header />
           <main className="p-6 bg-gray-100 flex-grow">
             <Routes>
+              <Route path="/" element={<Login />} />
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/board" element={<Board />} />
               <Route path="/tasksmanager" element={<Tasks />} /> 
               <Route path="/cronograma" element={<Cronograma />} />
-              {/* Agregar más rutas*/}
+              {/* Agregar más rutas */}
             </Routes>
           </main>
         </div>

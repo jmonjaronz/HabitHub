@@ -121,10 +121,10 @@ const TaskModal: React.FC<TaskModalProps> = ({ task, isOpen, onClose, onSave, is
             onChange={(e) => setStatus(e.target.value)}
             className="border p-2 rounded-md w-full"
           >
-            <option value="To do">Por hacer</option>
-            <option value="In Progress">En progreso</option>
-            <option value="In Review">En revisión</option>
-            <option value="Done">Hecho</option>
+            <option value="To do">To do</option>
+            <option value="In Progress">In Progress</option>
+            <option value="In Review">In Review</option>
+            <option value="Done">Done</option>
           </select>
         </div>
         <div className="flex justify-end space-x-2">
