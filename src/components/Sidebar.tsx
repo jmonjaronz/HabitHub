@@ -10,7 +10,7 @@ const Sidebar = () => {
       <nav className="mt-10">
         <ul>
           <li className="mb-6">
-            <Link to="/" className="flex items-center text-white hover:bg-gray-700 p-2 rounded">
+            <Link to="/dashboard" className="flex items-center text-white hover:bg-gray-700 p-2 rounded">
               <FiHome className="mr-3" /> Dashboard
             </Link>
           </li>
