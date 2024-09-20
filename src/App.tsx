@@ -4,6 +4,7 @@ import Sidebar from './components/Sidebar';
 import Dashboard from './components/Dashboard';
 import Board from './components/Board'; 
 import Tasks from './components/Tasks'; 
+import Cronograma from './components/Cronograma';
 
 const App = () => {
   return (
@@ -17,6 +18,7 @@ const App = () => {
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/board" element={<Board />} />
               <Route path="/tasks" element={<Tasks />} /> 
+              <Route path="/cronograma" element={<Cronograma />} />
               {/* Agregar más rutas*/}
             </Routes>
           </main>
