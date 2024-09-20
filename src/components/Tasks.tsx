@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { FiEdit, FiTrash2 } from 'react-icons/fi';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 
 interface Task {
   id: string;
@@ -7,8 +9,8 @@ interface Task {
   description: string;
   status: string;
   assignedTo: string;
-  startDate: string;
-  dueDate: string;
+  startDate: Date | null;
+  dueDate: Date | null;
   reportTo: string;
 }
 
@@ -17,8 +19,8 @@ const TaskManager: React.FC = () => {
   const [taskName, setTaskName] = useState('');
   const [description, setDescription] = useState('');
   const [assignedTo, setAssignedTo] = useState('');
-  const [startDate, setStartDate] = useState('');
-  const [dueDate, setDueDate] = useState('');
+  const [startDate, setStartDate] = useState<Date | null>(null);
+  const [dueDate, setDueDate] = useState<Date | null>(null);
   const [reportTo, setReportTo] = useState('');
   const [taskCount, setTaskCount] = useState(1);
 
@@ -38,8 +40,8 @@ const TaskManager: React.FC = () => {
     setTaskName('');
     setDescription('');
     setAssignedTo('');
-    setStartDate('');
-    setDueDate('');
+    setStartDate(null);
+    setDueDate(null);
     setReportTo('');
     setTaskCount(taskCount + 1);
   };
@@ -76,19 +78,19 @@ const TaskManager: React.FC = () => {
             onChange={e => setAssignedTo(e.target.value)}
             className="border p-2 rounded-md w-full"
           />
-          <input
-            type="date"
-            placeholder="Fecha de inicio"
-            value={startDate}
-            onChange={e => setStartDate(e.target.value)}
+          <DatePicker
+            selected={startDate}
+            onChange={date => setStartDate(date)}
             className="border p-2 rounded-md w-full"
+            dateFormat="dd/MM/yyyy"
+            placeholderText="Fecha de inicio"
           />
-          <input
-            type="date"
-            placeholder="Fecha de fin"
-            value={dueDate}
-            onChange={e => setDueDate(e.target.value)}
+          <DatePicker
+            selected={dueDate}
+            onChange={date => setDueDate(date)}
             className="border p-2 rounded-md w-full"
+            dateFormat="dd/MM/yyyy"
+            placeholderText="Fecha de fin"
           />
           <input
             type="text"
@@ -128,8 +130,8 @@ const TaskManager: React.FC = () => {
                 <td className="p-2">{task.name}</td>
                 <td className="p-2">{task.status}</td>
                 <td className="p-2">{task.assignedTo}</td>
-                <td className="p-2">{task.startDate}</td>
-                <td className="p-2">{task.dueDate}</td>
+                <td className="p-2">{task.startDate ? task.startDate.toLocaleDateString() : '-'}</td>
+                <td className="p-2">{task.dueDate ? task.dueDate.toLocaleDateString() : '-'}</td>
                 <td className="p-2">{task.reportTo}</td>
                 <td className="p-2 text-center">
                   <button className="text-blue-500 hover:text-blue-700 mx-2">
