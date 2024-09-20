@@ -5,7 +5,7 @@ const Sidebar = () => {
   return (
     <div className="w-64 h-full bg-gray-800 text-white">
       <div className="p-6">
-        <h2 className="text-2xl font-bold">HabitHub</h2>
+        <h2 className="text-2xl font-bold">Mr Soft</h2>
       </div>
       <nav className="mt-10">
         <ul>
