@@ -15,7 +15,7 @@ const Sidebar = () => {
             </Link>
           </li>
           <li className="mb-6">
-            <Link to="/tasks" className="flex items-center text-white hover:bg-gray-700 p-2 rounded">
+            <Link to="/tasksmanager" className="flex items-center text-white hover:bg-gray-700 p-2 rounded">
               <FiList className="mr-3" /> Tasks
             </Link>
           </li>

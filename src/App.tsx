@@ -1,10 +1,10 @@
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Header from './components/Header';
 import Sidebar from './components/Sidebar';
-import Dashboard from './components/Dashboard';
-import Board from './components/Board'; 
-import Tasks from './components/Tasks'; 
-import Cronograma from './components/Cronograma';
+import Dashboard from './pages/Dashboard';
+import Board from './pages/Board'; 
+import Tasks from './pages/TaskManager'; 
+import Cronograma from './pages/Cronograma';
 
 const App = () => {
   return (
@@ -17,7 +17,7 @@ const App = () => {
             <Routes>
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/board" element={<Board />} />
-              <Route path="/tasks" element={<Tasks />} /> 
+              <Route path="/tasksmanager" element={<Tasks />} /> 
               <Route path="/cronograma" element={<Cronograma />} />
               {/* Agregar más rutas*/}
             </Routes>
