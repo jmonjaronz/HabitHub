@@ -4,11 +4,11 @@ import Header from '../components/Header';
 
 const MainLayout: React.FC<{ username: string }> = ({ username }) => {
   return (
-    <div className="flex h-screen"> {/* Cambia a h-screen para ocupar toda la altura */}
+    <div className="flex h-screen">
       <Sidebar />
-      <div className="flex-1 flex flex-col"> {/* Asegúrate de que flex-1 esté presente */}
+      <div className="flex-1 flex flex-col"> 
         <Header username={username} />
-        <div className="flex-1 p-6 overflow-auto"> {/* Flex-1 para ocupar el resto del espacio */}
+        <div className="flex-1 p-6 overflow-auto">
           <Outlet />
         </div>
       </div>
