@@ -1,95 +1,97 @@
-import { useState } from 'react';
-
-interface SubTask {
-  id: number;
-  title: string;
-  startDate: string;
-  endDate: string;
-}
+import React, { useState } from 'react';
 
 interface Task {
   id: number;
-  title: string;
-  startDate: string;
-  endDate: string;
-  subTasks: SubTask[];
+  name: string;
+  start: Date;
+  end: Date;
 }
 
 const initialTasks: Task[] = [
-  {
-    id: 1,
-    title: 'Desarrollo de Frontend',
-    startDate: '2024-09-01',
-    endDate: '2024-09-10',
-    subTasks: [
-      { id: 1, title: 'Diseño de UI', startDate: '2024-09-01', endDate: '2024-09-03' },
-      { id: 2, title: 'Implementación de componentes', startDate: '2024-09-04', endDate: '2024-09-07' },
-    ],
-  },
-  {
-    id: 2,
-    title: 'Backend API',
-    startDate: '2024-09-05',
-    endDate: '2024-09-15',
-    subTasks: [
-      { id: 1, title: 'Modelado de base de datos', startDate: '2024-09-05', endDate: '2024-09-06' },
-      { id: 2, title: 'Implementación de endpoints', startDate: '2024-09-07', endDate: '2024-09-10' },
-    ],
-  },
-  // Agregar más tareas aquí
+  { id: 1, name: 'Tarea 1', start: new Date(2024, 8, 1), end: new Date(2024, 8, 3) },
+  { id: 2, name: 'Tarea 2', start: new Date(2024, 8, 2), end: new Date(2024, 8, 5) },
+  { id: 3, name: 'Tarea 3', start: new Date(2024, 8, 4), end: new Date(2024, 8, 8) },
 ];
 
-const Cronograma = () => {
-  const [tasks] = useState<Task[]>(initialTasks);
+const Cronograma: React.FC = () => {
+  const [tasks, setTasks] = useState<Task[]>(initialTasks);
+  const [startDate, setStartDate] = useState(new Date(2024, 8, 1));
+  const [endDate, setEndDate] = useState(new Date(2024, 8, 10));
 
-  // Función que calcula el porcentaje de la barra en función del progreso
-  const calculateProgress = (startDate: string, endDate: string) => {
-    const start = new Date(startDate).getTime();
-    const end = new Date(endDate).getTime();
-    const today = Date.now();
-    const progress = Math.min(100, ((today - start) / (end - start)) * 100);
-    return progress > 0 ? progress : 0;
+  const days: Date[] = [];
+  for (let d = new Date(startDate); d <= endDate; d.setDate(d.getDate() + 1)) {
+    days.push(new Date(d));
+  }
+
+  const handleAddTask = () => {
+    const newTask: Task = {
+      id: tasks.length + 1,
+      name: `Tarea ${tasks.length + 1}`,
+      start: new Date(startDate),
+      end: new Date(startDate.setDate(startDate.getDate() + 2)),
+    };
+    setTasks([...tasks, newTask]);
   };
 
+  const monthAbbreviation = days[0].toLocaleString('es-ES', { month: 'short' }).toUpperCase();
+
   return (
-    <div className="p-6">
-      <h1 className="text-3xl font-bold mb-6">Cronograma del Proyecto</h1>
-      <div className="space-y-4">
-        {tasks.map((task) => (
-          <div key={task.id} className="bg-white p-4 rounded-lg shadow-md">
-            <div className="flex justify-between items-center">
-              <h2 className="text-xl font-semibold">{task.title}</h2>
-              <span className="text-sm">{task.startDate} - {task.endDate}</span>
-            </div>
-            <div className="relative mt-2">
-              <div className="h-4 bg-gray-300 rounded-full overflow-hidden">
-                <div
-                  className="bg-blue-500 h-full rounded-full"
-                  style={{ width: `${calculateProgress(task.startDate, task.endDate)}%` }}
-                />
-              </div>
-            </div>
-            <div className="ml-4 mt-4 space-y-2">
-              {task.subTasks.map((subTask) => (
-                <div key={subTask.id} className="bg-gray-100 p-3 rounded-md">
-                  <div className="flex justify-between items-center">
-                    <h3 className="text-lg">{subTask.title}</h3>
-                    <span className="text-sm">{subTask.startDate} - {subTask.endDate}</span>
-                  </div>
-                  <div className="relative mt-2">
-                    <div className="h-3 bg-gray-300 rounded-full overflow-hidden">
-                      <div
-                        className="bg-green-500 h-full rounded-full"
-                        style={{ width: `${calculateProgress(subTask.startDate, subTask.endDate)}%` }}
-                      />
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        ))}
+    <div className="overflow-x-auto">
+      <div className="flex mb-4">
+        <input
+          type="date"
+          value={startDate.toISOString().substr(0, 10)}
+          onChange={(e) => setStartDate(new Date(e.target.value))}
+          className="mr-2 border border-gray-300 p-2 rounded"
+        />
+        <input
+          type="date"
+          value={endDate.toISOString().substr(0, 10)}
+          onChange={(e) => setEndDate(new Date(e.target.value))}
+          className="mr-2 border border-gray-300 p-2 rounded"
+        />
+        <button 
+          onClick={handleAddTask} 
+          className="bg-blue-500 text-white p-2 rounded">
+          Agregar Tarea
+        </button>
       </div>
+      <table className="min-w-full border-collapse border border-gray-300">
+        <thead>
+          <tr>
+            <th className="border border-gray-300 p-2">Tareas</th>
+            {days.map((day, index) => (
+              <th key={index} className="border border-gray-300 p-2 text-center">
+                {index === 0 || day.getDate() === 1 ? monthAbbreviation : ''}
+              </th>
+            ))}
+          </tr>
+          <tr>
+            {days.map((day, index) => (
+              <th key={index} className="border border-gray-300 p-2 text-center text-sm">
+                {day.getDate()}
+              </th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {tasks.map(task => (
+            <tr key={task.id}>
+              <td className="border border-gray-300 p-2">{task.name}</td>
+              {days.map((day, index) => {
+                const isInRange = day >= task.start && day <= task.end;
+                return (
+                  <td key={index} className="border border-gray-300 p-0">
+                    {isInRange && (
+                      <div className="h-4 bg-blue-500" style={{ width: '100%' }} />
+                    )}
+                  </td>
+                );
+              })}
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 };

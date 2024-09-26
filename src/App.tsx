@@ -21,7 +21,7 @@ const App = () => {
         {username && <Sidebar />} {/* Sidebar solo si hay un usuario */}
         <div className="flex flex-col flex-grow">
           {username && <Header username={username} />}
-          <main className="p-6 bg-gray-100 flex-grow">
+          <main className="bg-gray-100 flex-grow">
             <Routes>
               <Route path="/" element={<Login onLogin={handleLogin} />} />
               <Route path="/dashboard" element={<Dashboard />} />

@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { FiEye, FiEyeOff, FiBriefcase } from 'react-icons/fi';
+import { FiEye, FiEyeOff} from 'react-icons/fi';
 import fondoLogin from '../assets/images/FondoLogin.png';
+import logo from '../assets/images/Grest.png';
 
 const Login: React.FC<{ onLogin: (username: string) => void }> = ({ onLogin }) => {
   const [username, setUsername] = useState('');
@@ -11,7 +12,7 @@ const Login: React.FC<{ onLogin: (username: string) => void }> = ({ onLogin }) =
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (username === 'admin' && password === 'password') {
+    if (username === 'Martín Ampuero' && password === 'password') {
       onLogin(username);
       navigate('/dashboard');
     } else {
@@ -22,13 +23,12 @@ const Login: React.FC<{ onLogin: (username: string) => void }> = ({ onLogin }) =
   return (
     <div className="flex min-h-screen">
       {/* Contenedor del formulario de login */}
-      <div className="flex flex-col justify-center items-center w-1/3 p-5 bg-white shadow-lg rounded-lg space-y-8 max-w-md mx-auto max-h-[calc(100vh-25px)] overflow-auto"> 
-        <div className="flex flex-col items-center"> 
-          <FiBriefcase className="text-9xl text-orange-500 mb-2" /> 
-          <h1 className="text-5xl font-bold text-center">HabitHub</h1> 
+      <div className="flex flex-col justify-center items-center lg:w-1/3 p-5 bg-white space-y-6 max-w-md mx-auto"> 
+        <div className="rounded-full w-36 h-36 shadow-lg mb-3 overflow-hidden">
+          <img src={logo} alt="Logo"/>
         </div>
 
-        <h2 className="text-2xl text-center text-gray-900 w-full">Iniciar Sesión</h2> 
+        <h2 className="text-2xl text-center text-gray-800 w-full">Iniciar Sesión</h2> 
 
         <form onSubmit={handleSubmit} className="w-full space-y-5 px-10">
           <div>
@@ -41,7 +41,7 @@ const Login: React.FC<{ onLogin: (username: string) => void }> = ({ onLogin }) =
               placeholder="Usuario"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
-              className="mt-1 block w-full p-3 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+              className="mt-2 block w-full p-3 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
             />
           </div>
 
@@ -55,12 +55,12 @@ const Login: React.FC<{ onLogin: (username: string) => void }> = ({ onLogin }) =
               placeholder="Contraseña"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="mt-1 block w-full p-3 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 pr-10"
+              className="mt-2 block w-full p-3 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 pr-10"
             />
             <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
-              className="absolute inset-y-12 right-3 flex items-center"
+              className="absolute inset-y-12 mt-1 right-3 flex items-center"
             >
               {showPassword ? <FiEyeOff className="text-2xl text-gray-500" /> : <FiEye className="text-2xl text-gray-500" />}
             </button>
@@ -91,8 +91,8 @@ const Login: React.FC<{ onLogin: (username: string) => void }> = ({ onLogin }) =
       </div>
 
       {/* Sección para la imagen o color a la derecha */}
-      <div className="hidden md:block w-2/3 max-h-[calc(100vh-25px)] overflow-auto">
-        <img src={fondoLogin} alt="Background" className="h-full w-full object-cover" />
+      <div className="relative w-full hidden md:block lg:w-2/3">
+        <img src={fondoLogin} alt="Background" className=" absolute inset-0 h-full w-full object-cover" />
       </div>
     </div>
   );
