@@ -1,7 +1,7 @@
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import { useState } from 'react';
-import Header from './components/Header';
-import Sidebar from './components/Sidebar';
+import MainLayout from './layout/MainLayout'; // Nuevo layout para rutas autenticadas
+import AuthLayout from './layout/AuthLayout'; // Layout existente para autenticación
 import Dashboard from './pages/Dashboard';
 import Board from './pages/Board'; 
 import Tasks from './pages/TaskManager'; 
@@ -17,21 +17,22 @@ const App = () => {
 
   return (
     <Router>
-      <div className="flex h-screen">
-        {username && <Sidebar />}
-        <div className="flex flex-col flex-grow">
-          {username && <Header username={username} />}
-          <main className="bg-gray-100 flex-grow">
-            <Routes>
-              <Route path="/" element={<Login onLogin={handleLogin} />} />
-              <Route path="/dashboard" element={<Dashboard />} />
-              <Route path="/board" element={<Board />} />
-              <Route path="/tasksmanager" element={<Tasks />} /> 
-              <Route path="/cronograma" element={<Cronograma />} />
-            </Routes>
-          </main>
-        </div>
-      </div>
+      <Routes>
+        {/* Rutas no autenticadas */}
+        <Route path="/" element={
+          <AuthLayout>
+            <Login onLogin={handleLogin} />
+          </AuthLayout>
+        } />
+
+        {/* Rutas autenticadas */}
+        <Route element={username ? <MainLayout username={username} /> : <Navigate to="/" />}>
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/board" element={<Board />} />
+          <Route path="/tasksmanager" element={<Tasks />} />
+          <Route path="/cronograma" element={<Cronograma />} />
+        </Route>
+      </Routes>
     </Router>
   );
 };

@@ -14,7 +14,7 @@ const Header = ({ username }: HeaderProps) => {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    navigate('/login');
+    navigate('/');
   };
 
   const toggleDropdown = () => {

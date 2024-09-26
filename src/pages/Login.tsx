@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { FiEye, FiEyeOff} from 'react-icons/fi';
+import { FiEye, FiEyeOff } from 'react-icons/fi';
 import fondoLogin from '../assets/images/FondoLogin.png';
 import logo from '../assets/images/Grest.png';
 
@@ -10,25 +10,31 @@ const Login: React.FC<{ onLogin: (username: string) => void }> = ({ onLogin }) =
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
+  const [errorMessage, setErrorMessage] = useState('');
+
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (username === 'Martín Ampuero' && password === 'password') {
       onLogin(username);
       navigate('/dashboard');
     } else {
-      alert('Credenciales incorrectas');
+      setErrorMessage('Credenciales incorrectas'); 
     }
   };
 
   return (
-    <div className="flex min-h-screen">
+    <div className="flex min-h-screen bg-gray-100">
       {/* Contenedor del formulario de login */}
-      <div className="flex flex-col justify-center items-center lg:w-1/3 p-5 bg-white space-y-6 max-w-md mx-auto"> 
+      <div className="flex flex-col justify-center items-center lg:w-1/3 p-5 bg-white rounded-lg shadow-md space-y-6 max-w-md mx-auto"> 
         <div className="rounded-full w-36 h-36 shadow-lg mb-3 overflow-hidden">
-          <img src={logo} alt="Logo"/>
+          <img src={logo} alt="Logo" className="object-cover" />
         </div>
 
-        <h2 className="text-2xl text-center text-gray-800 w-full">Iniciar Sesión</h2> 
+        <h2 className="text-2xl text-center text-gray-800">Iniciar Sesión</h2> 
+
+        {errorMessage && (
+          <div className="text-red-500 text-center">{errorMessage}</div> // Mostrar el mensaje de error
+        )}
 
         <form onSubmit={handleSubmit} className="w-full space-y-5 px-10">
           <div>
@@ -60,9 +66,9 @@ const Login: React.FC<{ onLogin: (username: string) => void }> = ({ onLogin }) =
             <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
-              className="absolute inset-y-12 mt-1 right-3 flex items-center"
+              className="mt-1 absolute inset-y-12 right-3 flex items-center"
             >
-              {showPassword ? <FiEyeOff className="text-2xl text-gray-500" /> : <FiEye className="text-2xl text-gray-500" />}
+              {showPassword ? <FiEyeOff className="text-xl text-gray-500" /> : <FiEye className="text-xl text-gray-500" />}
             </button>
           </div>
 
@@ -92,7 +98,7 @@ const Login: React.FC<{ onLogin: (username: string) => void }> = ({ onLogin }) =
 
       {/* Sección para la imagen o color a la derecha */}
       <div className="relative w-full hidden md:block lg:w-2/3">
-        <img src={fondoLogin} alt="Background" className=" absolute inset-0 h-full w-full object-cover" />
+        <img src={fondoLogin} alt="Background" className="absolute inset-0 h-full w-full object-cover" />
       </div>
     </div>
   );
