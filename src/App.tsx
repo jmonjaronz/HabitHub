@@ -18,7 +18,7 @@ const App = () => {
   return (
     <Router>
       <div className="flex h-screen">
-        {username && <Sidebar />} {/* Sidebar solo si hay un usuario */}
+        {username && <Sidebar />}
         <div className="flex flex-col flex-grow">
           {username && <Header username={username} />}
           <main className="bg-gray-100 flex-grow">

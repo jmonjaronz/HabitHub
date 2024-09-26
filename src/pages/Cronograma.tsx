@@ -36,7 +36,7 @@ const Cronograma: React.FC = () => {
   const monthAbbreviation = days[0].toLocaleString('es-ES', { month: 'short' }).toUpperCase();
 
   return (
-    <div className="overflow-x-auto">
+    <div className="overflow-x-auto p-6">
       <div className="flex mb-4">
         <input
           type="date"

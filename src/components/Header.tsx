@@ -1,45 +1,71 @@
-import { useState } from 'react';
-import { FiBell, FiUser, FiMenu, FiLock, FiSettings, FiLogOut } from 'react-icons/fi';
+import { useState, useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
+import DropdownMenu from './DropdownMenu';
+import { FaUser, FaBell, FaChevronDown } from 'react-icons/fa';
+import logo from '../assets/images/Grest.png';
 
 interface HeaderProps {
   username: string; // Prop para el nombre de usuario
 }
 
 const Header = ({ username }: HeaderProps) => {
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false); // Estado para controlar el dropdown
+  const [showDropdown, setShowDropdown] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+  const navigate = useNavigate();
 
-  const toggleDropdown = () => {
-    setIsDropdownOpen(!isDropdownOpen);
+  const handleLogout = () => {
+    navigate('/login');
   };
 
+  const toggleDropdown = () => {
+    setShowDropdown(!showDropdown);
+  };
+
+  // Uso de pointerdown en lugar de mousedown para manejar mejor el clic fuera en móviles
+  useEffect(() => {
+    const handleClickOutside = (event: PointerEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setShowDropdown(false);
+      }
+    };
+
+    document.addEventListener('pointerdown', handleClickOutside);
+    return () => {
+      document.removeEventListener('pointerdown', handleClickOutside);
+    };
+  }, []);
+
   return (
-    <header className="bg-white p-4 shadow-md flex justify-between items-center">
-      <FiMenu className="text-xl cursor-pointer md:hidden" />
-      <h1 className="text-2xl font-bold">HabitHub</h1>
+    <header className="bg-white p-4 shadow-md flex justify-between items-center relative">
+      <div className="flex items-center space-x-2 ms-2">
+        <img src={logo} alt="Logo" className="w-9 h-9" />
+        <h1 className="text-2xl font-bold">HabitHub</h1>
+      </div>
       <div className="relative flex items-center">
-        <FiBell className="text-xl cursor-pointer mr-4" />
-        <div className="flex items-center cursor-pointer" onClick={toggleDropdown}>
-          <FiUser className="text-xl" />
-          <span className="ml-2 text-gray-700">{username}</span>
+        <div className="flex items-center justify-center w-9 h-9 rounded-full bg-orange-600 mr-4">
+          <FaBell className="text-xl text-white cursor-pointer" />
         </div>
-        {isDropdownOpen && (
-          <div className="absolute right-0 top-full mt-2 w-48 bg-white rounded-lg shadow-lg z-[1002]">
-            <ul className="list-none p-0 m-0">
-              <li className="flex items-center py-2 px-3 cursor-pointer transition-colors duration-200 hover:bg-gray-100">
-                <FiLock className="mr-2.5" />
-                <span>Cambiar contraseña</span>
-              </li>
-              <li className="flex items-center py-2 px-3 cursor-pointer transition-colors duration-200 hover:bg-gray-100">
-                <FiSettings className="mr-2.5" />
-                <span>Configuración</span>
-              </li>
-              <li className="flex items-center py-2 px-3 cursor-pointer transition-colors duration-200 hover:bg-gray-100">
-                <FiLogOut className="mr-2.5" />
-                <span>Cerrar sesión</span>
-              </li>
-            </ul>
+        <div className="flex items-center cursor-pointer flex-row gap-2 ml-auto md:w-[220px] h-[50px] md:justify-start"
+          onClick={toggleDropdown}
+          aria-expanded={showDropdown}
+          aria-haspopup="true"
+          aria-label="Menú de usuario"
+        >
+          <div className="flex items-center justify-center w-9 h-9 rounded-full bg-orange-600 cursor-pointer">
+            <FaUser className="text-xl text-white" />
           </div>
-        )}
+          <span className="hidden md:block ml-2 text-gray-700">{username}</span>
+          <FaChevronDown className="hidden md:block ml-2 text-orange-600 text-xl" />
+        </div>
+        {/* Dropdown para el menú del usuario */}
+        <div
+          ref={dropdownRef}
+          className={`dropdown absolute top-full right-2 transition-all duration-300 ease-in-out transform ${
+            showDropdown ? 'scale-100 opacity-100 translate-y-0' : 'scale-95 opacity-0 translate-y-[-10px]'
+          }`}
+        >
+          <DropdownMenu onLogout={handleLogout} />
+        </div>
       </div>
     </header>
   );
