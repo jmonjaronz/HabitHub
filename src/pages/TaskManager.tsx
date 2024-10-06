@@ -51,7 +51,7 @@ const TaskManager: React.FC = () => {
 
       <button
         onClick={handleAddTask}
-        className="mb-4 bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition duration-300"
+        className="mb-4 bg-orange-500 text-white py-2 px-4 rounded-md hover:bg-blue-500 hover:font-bold transition duration-300"
       >
         Agregar tarea
       </button>

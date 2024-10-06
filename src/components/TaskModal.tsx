@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { Task } from '../pages/TaskManager';
+import { taskSchema } from '../schemas/taskSchema';
 
 interface TaskModalProps {
-  task: Task | null; // Se recibe la tarea cuando es editar
-  isOpen: boolean; // Controla si el modal está abierto
-  onClose: () => void; // Cierra el modal
-  onSave: (task: Task) => void; // Guarda la tarea (nueva o editada)
-  isEditing: boolean; // Indica si se está editando o agregando
-  taskCount: number; // Contador de tareas para generar la clave
+  task: Task | null;
+  isOpen: boolean;
+  onClose: () => void;
+  onSave: (task: Task) => void;
+  isEditing: boolean;
+  taskCount: number;
 }
 
 const TaskModal: React.FC<TaskModalProps> = ({ task, isOpen, onClose, onSave, isEditing, taskCount }) => {
@@ -19,6 +20,8 @@ const TaskModal: React.FC<TaskModalProps> = ({ task, isOpen, onClose, onSave, is
   const [reportTo, setReportTo] = useState(task?.reportTo || '');
   const [objective, setObjective] = useState(task?.objective || '');
   const [status, setStatus] = useState(task?.status || 'To do');
+
+  const [errors, setErrors] = useState<Record<string, string>>({});
 
   useEffect(() => {
     if (task) {
@@ -43,8 +46,30 @@ const TaskModal: React.FC<TaskModalProps> = ({ task, isOpen, onClose, onSave, is
   }, [task, isOpen]);
 
   const handleSave = () => {
+    const result = taskSchema.safeParse({
+      name: taskName,
+      description, // La descripción no será validada
+      assignedTo,
+      startDate: startDate ? new Date(startDate) : null,
+      dueDate: dueDate ? new Date(dueDate) : null,
+      reportTo,
+      objective,
+      status,
+    });
+
+    if (!result.success) {
+      const errorMessages = result.error.flatten().fieldErrors;
+      setErrors({
+        name: errorMessages.name?.[0] || "",
+        assignedTo: errorMessages.assignedTo?.[0] || "",
+        startDate: errorMessages.startDate?.[0] || "",
+        dueDate: errorMessages.dueDate?.[0] || "",
+      });
+      return;
+    }
+
     const updatedTask: Task = {
-      id: task ? task.id : `TSK - ${taskCount}`, // Genera ID automáticamente si es nueva
+      id: task ? task.id : `TSK - ${taskCount}`,
       name: taskName,
       description,
       assignedTo,
@@ -54,7 +79,8 @@ const TaskModal: React.FC<TaskModalProps> = ({ task, isOpen, onClose, onSave, is
       objective,
       status,
     };
-    onSave(updatedTask); // Guardar la tarea (crear o editar)
+
+    onSave(updatedTask);
   };
 
   return isOpen ? (
@@ -77,6 +103,7 @@ const TaskModal: React.FC<TaskModalProps> = ({ task, isOpen, onClose, onSave, is
             placeholder="Nombre de la tarea"
             required
           />
+          {errors.name && <p className="text-red-500">{errors.name}</p>}
           <textarea
             value={description}
             onChange={(e) => setDescription(e.target.value)}
@@ -90,18 +117,21 @@ const TaskModal: React.FC<TaskModalProps> = ({ task, isOpen, onClose, onSave, is
             className="border p-2 rounded-md w-full"
             placeholder="Persona asignada"
           />
+          {errors.assignedTo && <p className="text-red-500">{errors.assignedTo}</p>}
           <input
             type="date"
             value={startDate || ''}
             onChange={(e) => setStartDate(e.target.value)}
             className="border p-2 rounded-md w-full"
           />
+          {errors.startDate && <p className="text-red-500">{errors.startDate}</p>}
           <input
             type="date"
             value={dueDate || ''}
             onChange={(e) => setDueDate(e.target.value)}
             className="border p-2 rounded-md w-full"
           />
+          {errors.dueDate && <p className="text-red-500">{errors.dueDate}</p>}
           <input
             type="text"
             value={reportTo}
@@ -121,16 +151,16 @@ const TaskModal: React.FC<TaskModalProps> = ({ task, isOpen, onClose, onSave, is
             onChange={(e) => setStatus(e.target.value)}
             className="border p-2 rounded-md w-full"
           >
-            <option value="To do">To do</option>
-            <option value="In Progress">In Progress</option>
-            <option value="In Review">In Review</option>
-            <option value="Done">Done</option>
+            <option value="To do">Por hacer</option>
+            <option value="In Progress">En progreso</option>
+            <option value="In Review">En revisión</option>
+            <option value="Done">Completada</option>
           </select>
         </div>
         <div className="flex justify-end space-x-2">
           <button
             onClick={handleSave}
-            className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
+            className="bg-orange-500 text-white px-4 py-2 rounded-md hover:bg-blue-500 hover:font-bold"
           >
             {isEditing ? 'Guardar cambios' : 'Agregar tarea'}
           </button>
