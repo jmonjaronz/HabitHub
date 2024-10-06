@@ -1,12 +1,16 @@
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
-import { useState } from 'react';
-import MainLayout from './layout/MainLayout'; // Nuevo layout para rutas autenticadas
-import AuthLayout from './layout/AuthLayout'; // Layout existente para autenticación
-import Dashboard from './pages/Dashboard';
-import Board from './pages/Board'; 
-import Tasks from './pages/TaskManager'; 
-import Cronograma from './pages/Cronograma';
-import Login from './pages/Login';
+import React, { useState, Suspense } from 'react';
+
+//Layout
+import MainLayout from './layout/MainLayout'; 
+import AuthLayout from './layout/AuthLayout'; 
+
+//Lazy Load Pages
+const Login= React.lazy(() => import('./pages/Login'));
+const Dashboard = React.lazy(() => import('./pages/Dashboard'));
+const Board = React.lazy(() => import('./pages/Board'));
+const Tasks = React.lazy(() => import('./pages/TaskManager'));
+const Cronograma = React.lazy(() => import('./pages/Cronograma'));
 
 const App = () => {
   const [username, setUsername] = useState<string | null>(null);
@@ -17,22 +21,24 @@ const App = () => {
 
   return (
     <Router>
-      <Routes>
-        {/* Rutas no autenticadas */}
-        <Route path="/" element={
-          <AuthLayout>
-            <Login onLogin={handleLogin} />
-          </AuthLayout>
-        } />
+      <Suspense>
+        <Routes>
+          {/* Rutas no autenticadas */}
+          <Route path="/" element={
+            <AuthLayout>
+              <Login onLogin={handleLogin} />
+            </AuthLayout>
+          } />
 
-        {/* Rutas autenticadas */}
-        <Route element={username ? <MainLayout username={username} /> : <Navigate to="/" />}>
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/board" element={<Board />} />
-          <Route path="/tasksmanager" element={<Tasks />} />
-          <Route path="/cronograma" element={<Cronograma />} />
-        </Route>
-      </Routes>
+          {/* Rutas autenticadas */}
+          <Route element={username ? <MainLayout username={username} /> : <Navigate to="/" />}>
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/board" element={<Board />} />
+            <Route path="/tasksmanager" element={<Tasks />} />
+            <Route path="/cronograma" element={<Cronograma />} />
+          </Route>
+        </Routes>
+      </Suspense>
     </Router>
   );
 };
