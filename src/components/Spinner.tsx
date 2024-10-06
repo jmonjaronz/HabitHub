@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 
 interface SpinnerProps {
-  color?: string; // Puedes permitir que el color sea pasado como prop
+  color?: string; // 
   size?: string; // Tamaño del spinner
 }
 
-const Spinner: React.FC<SpinnerProps> = ({ color = 'green-500', size = '24' }) => {
+const Spinner: React.FC<SpinnerProps> = ({ color = 'orange-500', size = '24' }) => {
   const [visible, setVisible] = useState(true);
   const [loaded, setLoaded] = useState(false); // Nuevo estado para controlar la carga
 
@@ -29,7 +29,7 @@ const Spinner: React.FC<SpinnerProps> = ({ color = 'green-500', size = '24' }) =
       <div 
         className={`border-t-4 border-${color} border-solid rounded-full w-${size} h-${size} animate-spin`} 
       />
-      <span className="mt-4 text-lg text-blue-500">
+      <span className="mt-4 text-lg text-orange-500">
         Cargando...
       </span>
     </div>

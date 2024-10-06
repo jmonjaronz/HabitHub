@@ -64,6 +64,8 @@ const TaskModal: React.FC<TaskModalProps> = ({ task, isOpen, onClose, onSave, is
         assignedTo: errorMessages.assignedTo?.[0] || "",
         startDate: errorMessages.startDate?.[0] || "",
         dueDate: errorMessages.dueDate?.[0] || "",
+        reportTo: errorMessages.reportTo?.[0] || "",
+        objective: errorMessages.objective?.[0] || "",
       });
       return;
     }
@@ -109,6 +111,7 @@ const TaskModal: React.FC<TaskModalProps> = ({ task, isOpen, onClose, onSave, is
             onChange={(e) => setDescription(e.target.value)}
             className="border p-2 rounded-md w-full"
             placeholder="Descripción"
+            required
           />
           <input
             type="text"
@@ -116,6 +119,7 @@ const TaskModal: React.FC<TaskModalProps> = ({ task, isOpen, onClose, onSave, is
             onChange={(e) => setAssignedTo(e.target.value)}
             className="border p-2 rounded-md w-full"
             placeholder="Persona asignada"
+            required
           />
           {errors.assignedTo && <p className="text-red-500">{errors.assignedTo}</p>}
           <input
@@ -139,6 +143,7 @@ const TaskModal: React.FC<TaskModalProps> = ({ task, isOpen, onClose, onSave, is
             className="border p-2 rounded-md w-full"
             placeholder="A quién informa"
           />
+          {errors.reportTo && <p className="text-red-500">{errors.reportTo}</p>}
           <input
             type="text"
             value={objective}
@@ -146,6 +151,7 @@ const TaskModal: React.FC<TaskModalProps> = ({ task, isOpen, onClose, onSave, is
             className="border p-2 rounded-md w-full"
             placeholder="Objetivo"
           />
+          {errors.objective && <p className="text-red-500">{errors.objective}</p>}
           <select
             value={status}
             onChange={(e) => setStatus(e.target.value)}
