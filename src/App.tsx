@@ -5,8 +5,11 @@ import React, { useState, Suspense } from 'react';
 import MainLayout from './layout/MainLayout'; 
 import AuthLayout from './layout/AuthLayout'; 
 
+//Spinner
+import Spinner from './components/Spinner';
 //Lazy Load Pages
-const Login= React.lazy(() => import('./pages/Login'));
+const Login = React.lazy(() => import('./pages/Login'));
+const ForgotPassword = React.lazy(() => import('./pages/ForgotPassword'));
 const Dashboard = React.lazy(() => import('./pages/Dashboard'));
 const Board = React.lazy(() => import('./pages/Board'));
 const Tasks = React.lazy(() => import('./pages/TaskManager'));
@@ -21,7 +24,7 @@ const App = () => {
 
   return (
     <Router>
-      <Suspense>
+      <Suspense fallback={<Spinner />}>
         <Routes>
           {/* Rutas no autenticadas */}
           <Route path="/" element={
@@ -29,6 +32,7 @@ const App = () => {
               <Login onLogin={handleLogin} />
             </AuthLayout>
           } />
+          <Route path="/forgot_password" element={<AuthLayout><ForgotPassword/></AuthLayout>} />
 
           {/* Rutas autenticadas */}
           <Route element={username ? <MainLayout username={username} /> : <Navigate to="/" />}>

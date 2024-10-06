@@ -77,7 +77,7 @@ const Login: React.FC<{ onLogin: (username: string) => void }> = ({ onLogin }) =
               </div>
 
               <div className="flex justify-between items-center">
-                <a href="#" className="text-blue-500 hover:text-orange-500 text-base 
+                <a href="forgot_password" className="text-blue-500 hover:text-orange-500 text-base 
                   hover:font-bold">Olvidaste tu contraseña?</a>
               </div>
 
