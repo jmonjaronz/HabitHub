@@ -8,6 +8,19 @@ import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Calendar } from '@/components/ui/calendar';
 import { format } from 'date-fns';
+import { z } from 'zod';
+
+// Define the schema with Zod
+const issueSchema = z.object({
+  title: z.string().nonempty("El título es obligatorio"),
+  assignedTo: z.string().nonempty("Debe asignar a alguien"),
+  reportedBy: z.string().nonempty("Debe indicar quién reporta"),
+  dueDate: z.date().refine((date) => date >= new Date(), {
+    message: "La fecha de entrega no puede ser anterior a la fecha actual",
+  }),
+  type: z.string(),
+  status: z.string(),
+});
 
 interface Issue {
   type: string;
@@ -56,14 +69,26 @@ const IssuesPage: React.FC = () => {
     assignedTo: '',
     reportedBy: '',
     dueDate: '',
-    type: 'Bug', // Agrega tipo por defecto
-    status: 'To Do', // Agrega estado por defecto
+    type: 'Bug', //  tipo por defecto
+    status: 'To Do', //  estado por defecto
   });
   const [issuesList, setIssuesList] = useState(issues);
   const [dueDate, setDueDate] = useState<Date | undefined>(undefined);
   const [isOpen, setIsOpen] = useState(false); // Estado para controlar el modal
+  const [errorMessages, setErrorMessages] = useState<string[]>([]); // Para almacenar mensajes de error
 
   const handleSaveIssue = () => {
+    const validationResult = issueSchema.safeParse({
+      ...newIssue,
+      dueDate: dueDate,
+    });
+
+    if (!validationResult.success) {
+      // Si la validación falla, guarda los errores
+      setErrorMessages(validationResult.error.errors.map(error => error.message));
+      return;
+    }
+
     const newKey = `ISS-${issuesList.length + 1}`;
     const issueToAdd: Issue = { 
       ...newIssue, 
@@ -75,6 +100,7 @@ const IssuesPage: React.FC = () => {
     setNewIssue({ title: '', assignedTo: '', reportedBy: '', dueDate: '', type: 'Bug', status: 'To Do' });
     setDueDate(undefined);
     setIsOpen(false); // Cierra el modal al guardar
+    setErrorMessages([]); // Limpia los mensajes de error
   };
 
   const filteredIssues = issuesList.filter((issue) => {
@@ -95,6 +121,13 @@ const IssuesPage: React.FC = () => {
         <DialogContent>
           <div className="p-4">
             <h2 className="text-xl font-bold">Agregar Nuevo Issue</h2>
+            {errorMessages.length > 0 && (
+              <div className="bg-red-200 text-red-800 p-2 mb-4 rounded">
+                {errorMessages.map((msg, index) => (
+                  <p key={index}>{msg}</p>
+                ))}
+              </div>
+            )}
             <form className="mt-4" onSubmit={(e) => { e.preventDefault(); handleSaveIssue(); }}>
               <div className="mb-4">
                 <label className="block mb-2">Título</label>
