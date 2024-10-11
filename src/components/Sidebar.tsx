@@ -1,4 +1,4 @@
-import { FaHome, FaList, FaTh, FaCalendar } from 'react-icons/fa'; 
+import { FaHome, FaList, FaTh, FaCalendar, FaExclamationCircle } from 'react-icons/fa'; 
 import { Link, useLocation } from 'react-router-dom'; 
 
 const Sidebar = () => {
@@ -44,6 +44,15 @@ const Sidebar = () => {
                 className={`flex items-center p-2 rounded ${location.pathname === '/cronograma' ? 'bg-gray-700' : 'hover:bg-gray-700'}`}
               >
                 <FaCalendar className="mr-3 text-xl font-bold" /> <span className="text-base">Cronograma</span>
+              </Link>
+            </li>
+            <li>
+              <Link
+                to="/issues"
+                aria-label="Ir a Issues"
+                className={`flex items-center p-2 rounded ${location.pathname === '/issues' ? 'bg-gray-700' : 'hover:bg-gray-700'}`}
+              >
+                <FaExclamationCircle className="mr-3 text-xl font-bold" /> <span className="text-base">Issues</span>
               </Link>
             </li>
           </ul>
