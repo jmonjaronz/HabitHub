@@ -55,6 +55,15 @@ const Sidebar = () => {
                 <FaExclamationCircle className="mr-3 text-xl font-bold" /> <span className="text-base">Issues</span>
               </Link>
             </li>
+            <li>
+              <Link
+                to="/issues1"
+                aria-label="Ir a Issues1"
+                className={`flex items-center p-2 rounded ${location.pathname === '/issues' ? 'bg-gray-700' : 'hover:bg-gray-700'}`}
+              >
+                <FaExclamationCircle className="mr-3 text-xl font-bold" /> <span className="text-base">Issues 1</span>
+              </Link>
+            </li>
           </ul>
         </nav>
       </div>

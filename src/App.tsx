@@ -15,6 +15,7 @@ const Board = React.lazy(() => import('./pages/Board'));
 const Tasks = React.lazy(() => import('./pages/TaskManager'));
 const Cronograma = React.lazy(() => import('./pages/Cronograma'));
 const Issues = React.lazy(() => import('./pages/Issues'));
+const Issues1 = React.lazy(() => import('./pages/Issues1'));
 
 const App = () => {
   const [username, setUsername] = useState<string | null>(null);
@@ -42,6 +43,7 @@ const App = () => {
             <Route path="/tasksmanager" element={<Tasks />} />
             <Route path="/cronograma" element={<Cronograma />} />
             <Route path="/issues" element={<Issues/>} />
+            <Route path="/issues1" element={<Issues1/>} />
           </Route>
         </Routes>
       </Suspense>
